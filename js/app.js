@@ -88,15 +88,39 @@ function addSwiper(selector, options = {}) {
 
 $(function () {
 
-  $(".popup__nav .nav-link").on("shown.bs.tab", function () {
+  $(".js-toggle-tab").on("click", function (e) {
 
-    $(".popup__iframe").each(function () {
+    e.preventDefault();
 
-      var $item = $(this);
+    const target = $(this).attr("href");
 
-      var url = $item.data("src");
+    const $target = $(target);
 
-      $item.attr("src", url);
-    });
+    if (!$target.length || $target.hasClass("active")) return;
+
+    $target.siblings(".active").removeClass("show active").find("iframe").attr("src", "");
+
+    $target.addClass("active show");
+
+    const $iframe = $target.find("iframe");
+
+    if ($iframe.length) {
+
+      $iframe.attr("src", $iframe.data("src") + "?autoplay=1");
+    }
+  });
+
+  $(".js-doc-open").on("click", function (e) {
+
+    e.preventDefault();
+
+    const target = $(this).data("target");
+
+    $(target).addClass("show");
+  });
+
+  $(".doc__close").on("click", function () {
+
+    $(this).closest(".doc").removeClass("show");
   });
 });

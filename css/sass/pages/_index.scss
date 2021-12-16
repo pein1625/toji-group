@@ -53,13 +53,34 @@
   }
 
   &__main {
+    position: relative;
+    z-index: 1;
   }
 
-  &__icon {
+  &__toggle {
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
     position: absolute;
+    z-index: 10;
     bottom: 12px;
     right: 12px;
     height: 46px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: 50% 50%;
+      filter: brightness(0);
+      opacity: 0.35;
+      transition: 0.4s;
+    }
+
+    &:hover img {
+      filter: brightness(1);
+      opacity: 1;
+    }
   }
 
   &__frame {
@@ -90,10 +111,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: 0.4s ease;
-  }
-
-  &__frame:hover &__img {
-    transform: translate(-50%, -50%) scale(1.05);
   }
 
   &__aside {
@@ -151,8 +168,8 @@
 
   &__more {
     font-size: 13px;
-    font-weight: 300;
-    font-style: italic;
+    font-weight: 700;
+    text-transform: uppercase;
     color: $primary;
   }
 
@@ -165,6 +182,7 @@
       display: block;
       width: 100%;
       font-size: 13px;
+      font-weight: 700;
       line-height: 30px;
       padding: 0 16px;
       border-radius: 15px;
@@ -172,6 +190,7 @@
       background-color: $primary;
       color: $white;
       transition: 0.4s ease;
+      text-transform: uppercase;
 
       &:hover {
         color: $white;
@@ -255,6 +274,43 @@
       position: static;
       overflow: unset;
       padding-right: 0;
+    }
+  }
+}
+
+.doc {
+  display: none;
+  background-color: $white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  &.show {
+    display: block;
+  }
+
+  &__frame {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__close {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+    padding: 8px 16px;
+    background-color: rgba(#000, 0.75);
+    color: $white;
+    font-size: 13px;
+    text-transform: uppercase;
+    border: 0;
+    transition: 0.4s;
+
+    &:hover {
+      background-color: rgba(#000, 0.9);
     }
   }
 }
