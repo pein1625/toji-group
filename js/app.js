@@ -96,7 +96,21 @@ $(function () {
 
     const $target = $(target);
 
-    if (!$target.length || $target.hasClass("active")) return;
+    if (!$target.length) return;
+
+    if ($target.hasClass("active")) {
+
+      if ($(this).data("type") !== "video") {
+
+        return;
+      }
+
+      $target.removeClass("show active").find("iframe").attr("src", "");
+
+      $target.siblings(".tab-pane").eq(0).addClass("show active");
+
+      return;
+    }
 
     $target.siblings(".active").removeClass("show active").find("iframe").attr("src", "");
 
