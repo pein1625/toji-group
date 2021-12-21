@@ -1,140 +1,155 @@
 // menu toggle
 $(function () {
-  $(".menu-toggle").on("click", function () {
-    var $toggle = $(this);
+    $(".menu-toggle").on("click", function () {
+        var $toggle = $(this);
 
-    $toggle.toggleClass("active").siblings(".menu-sub").slideToggle();
+        $toggle.toggleClass("active").siblings(".menu-sub").slideToggle();
 
-    $toggle.siblings(".menu-mega").children(".menu-sub").slideToggle();
+        $toggle.siblings(".menu-mega").children(".menu-sub").slideToggle();
 
-    $toggle.parent().siblings(".menu-item-group").children(".menu-sub").slideUp();
+        $toggle.parent().siblings(".menu-item-group").children(".menu-sub").slideUp();
 
-    $toggle.parent().siblings(".menu-item-group").children(".menu-mega").children(".menu-sub").slideUp();
+        $toggle.parent().siblings(".menu-item-group").children(".menu-mega").children(".menu-sub").slideUp();
 
-    $toggle.parent().siblings(".menu-item-group").children(".menu-toggle").removeClass("active");
-  });
+        $toggle.parent().siblings(".menu-item-group").children(".menu-toggle").removeClass("active");
+    });
 
-  $(".menu-item-group > .menu-link, .menu-item-mega > .menu-link").on("click", function (e) {
-    if ($(window).width() < 1200 || !mobileAndTabletCheck()) return;
+    $(".menu-item-group > .menu-link, .menu-item-mega > .menu-link").on("click", function (e) {
+        if ($(window).width() < 1200 || !mobileAndTabletCheck()) return;
 
-    e.preventDefault();
-  });
+        e.preventDefault();
+    });
 });
 
 // navbar mobile toggle
 $(function () {
-  var $body = $("html, body");
-  var $navbar = $(".js-navbar");
-  var $navbarToggle = $(".js-navbar-toggle");
+    var $body = $("html, body");
+    var $navbar = $(".js-navbar");
+    var $navbarToggle = $(".js-navbar-toggle");
 
-  $navbarToggle.on("click", function () {
-    $navbarToggle.toggleClass("active");
-    $navbar.toggleClass("is-show");
-    $body.toggleClass("overflow-hidden");
-  });
+    $navbarToggle.on("click", function () {
+        $navbarToggle.toggleClass("active");
+        $navbar.toggleClass("is-show");
+        $body.toggleClass("overflow-hidden");
+    });
 });
 
 $(function () {
-  var $moveTop = $(".btn-movetop");
-  var $window = $(window);
-  var $body = $("html");
+    var $moveTop = $(".btn-movetop");
+    var $window = $(window);
+    var $body = $("html");
 
-  if (!$moveTop.length) return;
+    if (!$moveTop.length) return;
 
-  $window.on("scroll", function () {
-    if ($window.scrollTop() > 150) {
-      $moveTop.addClass("show");
+    $window.on("scroll", function () {
+        if ($window.scrollTop() > 150) {
+            $moveTop.addClass("show");
 
-      return;
-    }
+            return;
+        }
 
-    $moveTop.removeClass("show");
-  });
-
-  $moveTop.on("click", function () {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
+        $moveTop.removeClass("show");
     });
-  });
+
+    $moveTop.on("click", function () {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth"
+        });
+    });
 });
 
 // swiper template
 function addSwiper(selector, options = {}) {
-  return Array.from(document.querySelectorAll(selector), function (item) {
-    var $sliderContainer = $(item),
-        $sliderEl = $sliderContainer.find(selector + "__container");
+    return Array.from(document.querySelectorAll(selector), function (item) {
+        var $sliderContainer = $(item),
+            $sliderEl = $sliderContainer.find(selector + "__container");
 
-    if (options.navigation) {
-      $sliderContainer.addClass("has-nav");
-      options.navigation = {
-        prevEl: $sliderContainer.find(selector + "__prev"),
-        nextEl: $sliderContainer.find(selector + "__next")
-      };
-    }
+        if (options.navigation) {
+            $sliderContainer.addClass("has-nav");
+            options.navigation = {
+                prevEl: $sliderContainer.find(selector + "__prev"),
+                nextEl: $sliderContainer.find(selector + "__next")
+            };
+        }
 
-    if (options.pagination) {
-      $sliderContainer.addClass("has-pagination");
-      options.pagination = {
-        el: $sliderContainer.find(selector + "__pagination"),
-        clickable: true
-      };
-    }
+        if (options.pagination) {
+            $sliderContainer.addClass("has-pagination");
+            options.pagination = {
+                el: $sliderContainer.find(selector + "__pagination"),
+                clickable: true
+            };
+        }
 
-    return new Swiper($sliderEl, options);
-  });
+        return new Swiper($sliderEl, options);
+    });
 }
 
 $(function () {
 
-  $(".js-toggle-tab").on("click", function (e) {
+    $(".js-toggle-tab").on("click", function (e) {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const target = $(this).attr("href");
+        const $el = $(this);
 
-    const $target = $(target);
+        const imageText = $el.data("imageText");
 
-    if (!$target.length) return;
+        const videoText = $el.data("videoText");
 
-    if ($target.hasClass("active")) {
+        const $activeTab = $(".js-popup-tab.active");
 
-      if ($(this).data("type") !== "video") {
+        $activeTab.removeClass("show active");
 
-        return;
-      }
+        $activeTab.siblings(".tab-pane").addClass("show active");
 
-      $target.removeClass("show active").find("iframe").attr("src", "");
+        $el.toggleClass("is-video");
 
-      $target.siblings(".tab-pane").eq(0).addClass("show active");
+        if ($el.hasClass("is-video")) {
 
-      return;
-    }
+            $el.html(imageText);
 
-    $target.siblings(".active").removeClass("show active").find("iframe").attr("src", "");
+            const $iframe = $activeTab.siblings(".tab-pane").find("iframe");
 
-    $target.addClass("active show");
+            if ($iframe.length) {
 
-    const $iframe = $target.find("iframe");
+                $iframe.attr("src", $iframe.data("src") + "?autoplay=1");
+            }
 
-    if ($iframe.length) {
+            return;
+        }
 
-      $iframe.attr("src", $iframe.data("src") + "?autoplay=1");
-    }
-  });
+        $el.html(videoText);
 
-  $(".js-doc-open").on("click", function (e) {
+        const $iframe = $activeTab.find("iframe");
 
-    e.preventDefault();
+        if ($iframe.length) {
 
-    const target = $(this).data("target");
+            $iframe.attr("src", "");
+        }
+    });
 
-    $(target).addClass("show");
-  });
+    $(".popup__toggle").on("click", function (e) {
 
-  $(".doc__close").on("click", function () {
+        e.preventDefault();
 
-    $(this).closest(".doc").removeClass("show");
-  });
+        $(this).toggleClass("active");
+
+        $(".popup__3d").toggleClass("show");
+    });
+
+    $(".js-doc-open").on("click", function (e) {
+
+        e.preventDefault();
+
+        const target = $(this).data("target");
+
+        $(target).addClass("show");
+    });
+
+    $(".doc__close").on("click", function () {
+
+        $(this).closest(".doc").removeClass("show");
+    });
 });
